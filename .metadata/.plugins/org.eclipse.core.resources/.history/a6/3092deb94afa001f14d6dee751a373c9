@@ -1,0 +1,63 @@
+package com.order.service; 
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.stereotype.Service;  
+import com.order.dto.OrderDto;
+import com.order.entity.Order;
+import com.order.entity.Product;
+import com.order.product.apiservice.ProductService; 
+import com.order.repository.OrderRepository;
+  
+
+@Service
+public class OrderServiceImpl implements OrderService {
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	 
+	
+	@Autowired
+	private ProductService productService;
+	
+	 
+	
+	@Override
+	public Object placedOrder(OrderDto orderDto) {
+		System.out.println("Inside order service -->"+ orderDto); 
+		Product productObj = productService.getProductById(orderDto.getProductId());
+		System.out.println("Final Result ******>>>>>>>"+productObj);
+		
+		if(!productObj.isInStock()) {
+			return "Product Out of stock. Apologies !!!";
+		}
+		
+		Order newOrder =  modelMapper.map(orderDto, Order.class);
+		newOrder.setProductId(productObj.getPid());
+		newOrder.setProductName(productObj.getProductName());
+		newOrder.setCategory(productObj.getCategory());
+		newOrder.setPrice(productObj.getPrice());
+		newOrder.setColor(productObj.getColor());
+		
+		System.out.println("New Order before storing into database --->"+newOrder);
+		
+		Order savedOrder =  orderRepository.save(newOrder);
+		
+		//update the quantity
+		boolean isQuantityUpdated = productService.updateQuantityOfProductAfterBuying(orderDto.getProductId(), orderDto.getQuantity());
+		if(isQuantityUpdated) {
+			System.out.println("Quantity also updated ----->");
+		}else {
+			System.out.println("Not update quantity *****");
+		}
+		
+		
+		return modelMapper.map(savedOrder, OrderDto.class);
+	}
+	
+	
+
+}

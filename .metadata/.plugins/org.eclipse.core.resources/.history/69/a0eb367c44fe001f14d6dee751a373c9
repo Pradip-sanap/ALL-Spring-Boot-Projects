@@ -1,0 +1,147 @@
+package com.product.controller;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test; 
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.product.cotnroller.ProductController;
+import com.product.dto.ProductDto;
+import com.product.service.ProductService;
+
+public class ProductControllerTests {
+
+	private ProductController productController;
+
+	@Mock
+	private ProductService productService;
+
+	@BeforeEach
+	public void setUp() {
+		MockitoAnnotations.openMocks(this);
+		productController = new ProductController(productService); 
+	}
+
+	@Test
+	public void testAddProduct_Success() {
+		// Arrange
+		ProductDto inputProduct = ProductDto.builder()
+				.pid(1)
+				.productName("Test Product")
+				.productDesc("Test Description")
+				.price(99.99)
+				.quantity(10)
+				.category("Electronics")
+				.inStock(true)
+				.color("Black").build();
+
+		// Mocking the service layer to return the same product when adding it
+		when(productService.addProduct(inputProduct)).thenReturn(inputProduct);
+
+		// Act
+		ResponseEntity<ProductDto> response = productController.addProduct(inputProduct);
+
+		// Assert
+		assertEquals(HttpStatus.CREATED, response.getStatusCode());
+		assertEquals(inputProduct, response.getBody());
+	}
+
+	@Test
+	public void testAddProduct_NullInput() {
+		// Act
+		ResponseEntity<ProductDto> response = productController.addProduct(null);
+
+		// Assert
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+	}
+
+	@Test
+	public void testAddProduct_InvalidInput() {
+		// Arrange
+		ProductDto inputProduct = new ProductDto(); // Missing required fields
+
+		// Act
+		ResponseEntity<ProductDto> response = productController.addProduct(inputProduct);
+
+		// Assert
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+	}
+
+	@Test
+	public void testAddProduct_ServiceException() {
+		// Arrange
+		ProductDto inputProduct = new ProductDto();
+		inputProduct.setPid(1);
+		inputProduct.setProductName("Test Product");
+
+		when(productService.addProduct(inputProduct)).thenThrow(new RuntimeException("Service Exception"));
+
+		// Act
+		ResponseEntity<ProductDto> response = productController.addProduct(inputProduct);
+
+		// Assert
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+	}
+	
+	@Test
+    public void testGetProduct_Success() {
+        // Arrange
+        int productId = 1;
+        ProductDto expectedProduct = ProductDto.builder()
+            .pid(productId)
+            .productName("Test Product")
+            .productDesc("This is a test product")
+            .price(99.99)
+            .quantity(10)
+            .category("Electronics")
+            .inStock(true)
+            .color("Black")
+            .build();
+
+        // Mock the service to return the expected product
+        when(productService.getProduct(productId)).thenReturn(expectedProduct);
+
+        // Act
+        ResponseEntity<Object> response = productController.getProduct(productId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedProduct, response.getBody());
+    }
+
+    @Test
+    public void testGetProduct_NotFound() {
+        // Arrange
+        int productId = 999; // assuming this ID does not exist
+
+        // Mock the service to return null (or throw, depending on your service logic)
+        when(productService.getProduct(productId)).thenReturn(null);
+
+        // Act
+        ResponseEntity<Object> response = productController.getProduct(productId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(null, response.getBody()); // Assuming this is your service's logic
+    }
+
+    @Test
+    public void testGetProduct_ExceptionThrown() {
+        // Arrange
+        int productId = 1;
+        when(productService.getProduct(productId)).thenThrow(new RuntimeException("Database error"));
+
+        // Act
+        ResponseEntity<Object> response = productController.getProduct(productId);
+
+        // Assert
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(null, response.getBody()); // Assuming null is returned on error
+    }
+
+}

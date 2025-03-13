@@ -1,0 +1,49 @@
+package com.order.controller;
+
+import java.io.IOException;
+ 
+import org.springframework.web.bind.annotation.RestController;
+
+import com.order.entity.Product;
+import com.product.apiservice.ProductApiService; 
+import com.product.apiservice.RetrofitServiceGenerator;
+
+import retrofit2.Call;
+import retrofit2.Response;
+
+@RestController
+public class ProductController {
+	
+	private ProductApiService productService = RetrofitServiceGenerator.createService(ProductApiService.class);
+	
+	
+//	@GetMapping
+    public  Product getProductById(int id){
+        Product result = new Product();
+        try {
+            Call<Product> product = productService.getProductById(id);
+            Response<Product> response = product.execute();
+            result = response.body();
+            return result;
+        }
+        catch (IOException e){
+        	e.printStackTrace();
+//            log.info("Exception occured",e);
+        }
+//        return new ResponseEntity<Product>(result, HttpStatus.OK);
+		return null;
+    }
+	
+//	@PutMapping
+	public boolean updateQuantityOfProductAfterBuying(int productid, int quantity) {
+		try {
+			Call<Boolean> isQuantityUpdated = productService.updateQuantityOfProduct(productid, quantity);
+			Response<Boolean> response = isQuantityUpdated.execute();
+            boolean result = response.body();
+            return result;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return false;
+	}
+}

@@ -1,0 +1,5 @@
+package com.springdatajpa.springboot.service;
+
+public class EmployeeServiceImpl {	
+
+}

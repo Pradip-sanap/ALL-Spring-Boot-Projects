@@ -20,7 +20,7 @@ public interface ProductService {
 	 *  
 	 * @return product object if data present in db, null otherwise.
 	 */
-	public ProductDto getProduct(int id);
+	public Object getProduct(int id);
 	
 	/**
 	 * Delete the product with provided product id.

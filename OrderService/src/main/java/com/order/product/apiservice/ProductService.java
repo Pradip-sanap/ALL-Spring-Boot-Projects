@@ -2,25 +2,41 @@ package com.order.product.apiservice;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.stereotype.Service;
 
 import com.order.entity.Product;
 
+
+import lombok.extern.slf4j.Slf4j;
 import retrofit2.Call;
 import retrofit2.Response;
 
 @Service
+@Slf4j
 public class ProductService {
 
 	private ProductApiService productService = RetrofitServiceGenerator.createService(ProductApiService.class);
+
+	
 
 	public Product getProductById(int id) {
 		Product result = new Product();
 		try {
 			Call<Product> product = productService.getProductById(id);
+			log.info("Product service call--->{}", product);
 			Response<Product> response = product.execute();
-			result = response.body();
-			return result;
+			log.info("Product service response --->{}", response);
+			log.info("Response body --->{}", response.body());
+			log.info("Response body --->{}", response.message());
+			log.info("Response body --->{}", response.code());
+			log.info("Response body --->{}", response.headers());
+			log.info("Response body --->{}", response.isSuccessful());
+			
+			
+			
+			
+			return (Product) response.body();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,3 +56,5 @@ public class ProductService {
 	}
 
 }
+//span id 
+//trace id

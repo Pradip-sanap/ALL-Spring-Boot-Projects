@@ -1,0 +1,18 @@
+int orderId;
+	
+	
+	String customerId;
+	
+	String customerName;
+	
+	String shippingAddress;
+	
+	LocalDate orderDate;
+	
+	LocalDate estimateDeliveryDate;
+	
+	OrderStatus orderStatus;
+	
+	PaymentStatus paymentStatus;
+	
+	String paymentId;

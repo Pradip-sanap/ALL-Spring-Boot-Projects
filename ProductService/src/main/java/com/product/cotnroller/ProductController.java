@@ -15,25 +15,54 @@ import org.springframework.web.bind.annotation.RestController;
 import com.product.dto.ProductDto;
 import com.product.service.ProductService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/product")
+@Slf4j
 public class ProductController {
+
+	public ProductController(ProductService productService) {
+		super();
+		this.productService = productService;
+	}
 
 	@Autowired
 	private ProductService productService;
 	
+	@Autowired
+	private brave.Tracer tracer;
+	
 	//add
 	@PostMapping("")
-	public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto){
-		System.out.println("Inside controller -->"+productDto);
-		return new ResponseEntity<ProductDto>(productService.addProduct(productDto), HttpStatus.CREATED);
+	public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) { 
+		try {
+			ProductDto result = productService.addProduct(productDto);
+			if(result != null) {
+				return new ResponseEntity<ProductDto>(result, HttpStatus.CREATED);
+			}
+			return ResponseEntity.badRequest().body(null);
+			
+		} catch (Exception e) {
+			e.getMessage();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+		
 	}
 	
 	//fetch 
 	@GetMapping("/{id}")
-	public ResponseEntity<ProductDto> getProduct(@PathVariable("id") int id){
-		System.out.println("Inside in controller -->"+id);
-		return new ResponseEntity<ProductDto>(productService.getProduct(id), HttpStatus.OK);
+	public ResponseEntity<Object> getProduct(@PathVariable("id") int id){ 
+		// Log trace and span ID
+        log.info("TraceId: {}, SpanId: {}", tracer.currentSpan().context().traceId(), tracer.currentSpan().context().spanId());
+
+		try {
+			return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
+			
+		} catch (Exception e) {
+			e.getMessage();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
 	}
 	
 	//update 

@@ -1,0 +1,36 @@
+package com.order.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.order.dto.OrderDto;
+import com.order.entity.Product;
+import com.order.service.OrderService;
+
+@RestController
+@RequestMapping("/orders")
+public class OrderController {
+	
+	@Autowired
+	private OrderService orderService;
+	
+	//place order
+	@PostMapping()
+	public ResponseEntity<Object> placedOrder(@RequestBody OrderDto orderDto){
+		System.out.println("Inside order controller ---->"+ orderDto);
+		return new ResponseEntity<>(orderService.placedOrder(orderDto), HttpStatus.CREATED);
+		
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Product> getOrderByIdd(@PathVariable("id") int id){
+		return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
+	}
+
+}

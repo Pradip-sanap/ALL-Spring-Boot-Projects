@@ -1,0 +1,9 @@
+package com.springdatajpa.springboot.service;
+
+import java.util.List;
+
+import com.springdatajpa.springboot.model.Employee;
+
+public interface EmployeeService {
+	List<Employee> getEmployees();
+}

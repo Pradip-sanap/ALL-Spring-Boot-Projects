@@ -12,9 +12,12 @@ import com.order.entity.Order;
 import com.order.entity.Product;
 import com.order.product.apiservice.ProductService; 
 import com.order.repository.OrderRepository;
+
+import lombok.extern.slf4j.Slf4j;
   
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
@@ -27,13 +30,18 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private ProductService productService;
 	
-	 
+	@Autowired
+	private brave.Tracer tracer;
 	
 	@Override
 	public Object placedOrder(OrderDto orderDto) {
 		System.out.println("Inside order service -->"+ orderDto); 
 		Product productObj = productService.getProductById(orderDto.getProductId());
 		System.out.println("Final Result ******>>>>>>>"+productObj);
+		
+		// Log trace and span ID
+        log.info("TraceId: {}, SpanId: {}", tracer.currentSpan().context().traceId(), tracer.currentSpan().context().spanId());
+
 		
 		if(!productObj.isInStock()) {
 			return "Product Out of stock. Apologies !!!";

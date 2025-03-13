@@ -1,0 +1,11 @@
+package com.order.service;
+
+import com.order.dto.OrderDto;
+
+public interface OrderService {
+	
+	public Object  placedOrder(OrderDto orderDto);
+	
+	public OrderDto getOrderById(int orderId);
+
+}

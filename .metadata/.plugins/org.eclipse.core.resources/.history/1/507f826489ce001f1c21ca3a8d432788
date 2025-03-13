@@ -1,0 +1,26 @@
+package com.springdatajpa.springboot.controller;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+// @Controller + @ResponseBody = @RestController
+@RestController    
+public class EmployeeController {
+	 
+	@GetMapping("/employees")
+	public String getEmployees() {
+		return "All Employees";
+	}
+	
+	@GetMapping("/employees/{id}")
+	public String getEmployee(@PathVariable Long id) {
+		return "Get Path mapping : " + id;
+	}
+	@DeleteMapping("/employees")
+	public String deleteEmployee(@RequestParam Long id) {
+		return "Deleting Employee with id : " + id;
+	}
+}

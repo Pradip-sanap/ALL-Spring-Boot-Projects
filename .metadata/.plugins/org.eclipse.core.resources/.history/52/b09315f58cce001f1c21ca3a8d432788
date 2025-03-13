@@ -1,0 +1,18 @@
+spring.application.name=FirstProject-1
+
+ 
+
+# Database connection settings
+spring.datasource.url=jdbc:mysql://localhost:3306/testdb
+spring.datasource.username=root
+spring.datasource.password=Pass@123
+
+# JDBC driver class name (optional, auto-detected in newer versions)
+#spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# Hibernate JPA settings
+spring.jpa.hibernate.ddl-auto=update
+#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# Additional Hibernate settings (optional)
+spring.jpa.show-sql=true

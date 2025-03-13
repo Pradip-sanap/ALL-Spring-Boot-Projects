@@ -1,0 +1,334 @@
+package com.product.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+
+import com.product.dto.ProductDto;
+import com.product.entity.Product;
+import com.product.repository.ProductRepository;
+
+@ExtendWith(MockitoExtension.class)
+public class ProductServiceImplTest {
+
+    @InjectMocks
+    private ProductServiceImpl productService;
+
+    @Mock
+    private ProductRepository productRepository;
+    
+    @Mock
+    private ModelMapper modelMapper;
+
+    // --- addProduct Tests ---
+    ProductDto getProductDto() {
+    	return ProductDto.builder().productName("Iphone")
+    								.category("Electronics")
+    								.price(800.00)
+    								.color("Gold")
+    								.productDesc("Best phone ever")
+    								.inStock(true)
+    								.quantity(600)
+    								.build();
+    }
+    
+    private ProductDto productDto;
+    private Product product;
+//    private final int existingProductId = 1;
+//    private final int nonExistingProductId = 2;
+
+    @BeforeEach
+    public void setUp() {
+        productDto = ProductDto.builder().productName("Iphone")
+				.category("Electronics")
+				.price(800.00)
+				.color("Gold")
+				.productDesc("Best phone ever")
+				.inStock(true)
+				.quantity(600)
+				.build();
+
+        product = Product.builder()
+        		.pid(101)
+         		.productName("Iphone")
+				.category("Electronics")
+				.price(800.00)
+				.color("Gold")
+				.productDesc("Best phone ever")
+				.inStock(true)
+				.quantity(600)
+				.build();
+        
+        
+    }
+
+    @Test
+    public void testAddProduct_Success() {
+        // Arrange
+        when(modelMapper.map(productDto, Product.class)).thenReturn(product);
+        when(productRepository.save(product)).thenReturn(product);
+        
+        when(modelMapper.map(product, ProductDto.class)).thenReturn(productDto);
+        productDto.setPid(101);
+
+        // Act
+        ProductDto result = productService.addProduct(productDto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(productDto.getPid(), result.getPid());
+        assertEquals(productDto.getProductName(), result.getProductName());
+        verify(modelMapper).map(productDto, Product.class);
+        verify(productRepository).save(product);
+        verify(modelMapper).map(product, ProductDto.class);
+    }
+    
+    @Test
+    public void testAddProduct_Exception() {
+        // Arrange
+        when(modelMapper.map(productDto, Product.class)).thenReturn(product);
+        when(productRepository.save(product)).thenThrow(new RuntimeException("Database error"));
+
+        // Act
+        ProductDto result = productService.addProduct(productDto);
+
+        // Assert
+        assertNull(result);
+        verify(modelMapper).map(productDto, Product.class);
+        verify(productRepository).save(product);
+    }
+    @Test
+    public void testAddProduct_NullInput() {
+        // Act
+        ProductDto result = productService.addProduct(null);
+
+        // Assert
+        assertNull(result);
+    }
+  
+//    // --- getProduct Tests ---
+    @Test
+    public void testGetProduct_WhenProductExists_ReturnsProductDto() {
+    	int existingProductId = 101;
+        when(productRepository.findById(existingProductId)).thenReturn(Optional.of(product));
+        productDto.setPid(101);
+        when(modelMapper.map(product, ProductDto.class)).thenReturn(productDto);
+
+        ProductDto result = productService.getProduct(existingProductId);
+
+        assertNotNull(result);
+        assertEquals(productDto, result);
+    }
+    
+    @Test
+    public void testGetProduct_WhenProductDoesNotExist_ReturnsNull() {
+    	int nonExistingProductId = 201;
+        when(productRepository.findById(nonExistingProductId)).thenReturn(Optional.empty());
+
+        ProductDto result = productService.getProduct(nonExistingProductId);
+
+        assertNull(result);
+    }
+    
+    @Test
+    public void testGetProduct_WhenExceptionOccurs_ReturnsNull() {
+    	int existingProductId = 101;
+        when(productRepository.findById(existingProductId)).thenThrow(new RuntimeException("Database error"));
+
+        ProductDto result = productService.getProduct(existingProductId);
+
+        assertNull(result);
+    }
+    
+    @Test
+    public void testDeleteProduct_WhenProductExists_ReturnsSuccessMessage() {
+    	int existingProductId = 101;
+        when(productRepository.findById(existingProductId)).thenReturn(Optional.of(product));
+
+        String result = productService.deleteProduct(existingProductId);
+
+        assertEquals("Product Record Deleted Successfully !!!", result);
+        verify(productRepository).deleteById(existingProductId); // Ensure deletion is called
+    }
+    
+    @Test
+    public void testDeleteProduct_WhenProductDoesNotExist_ReturnsErrorMessage() {
+    	int nonExistingProductId = 201;
+        when(productRepository.findById(nonExistingProductId)).thenReturn(Optional.empty());
+
+        String result = productService.deleteProduct(nonExistingProductId);
+
+        assertEquals("Product Not found!!!", result);
+        verify(productRepository, never()).deleteById(anyInt()); // Ensure deletion is not called
+    }
+//    @Test
+//    void testGetProductSuccess() {
+//        // Given
+//        int productId = 1;
+//        Product product = new Product();
+//        product.setPid(productId);
+//        ProductDto mappedDto = new ProductDto();
+//        mappedDto.setProductName("Fetched Product");
+//        
+//        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+//        when(modelMapper.map(product, ProductDto.class)).thenReturn(mappedDto);
+//        
+//        // When
+//        ProductDto result = productService.getProduct(productId);
+//        
+//        // Then
+//        assertNotNull(result);
+//        assertEquals("Fetched Product", result.getProductName());
+//    }
+//    
+//    @Test
+//    void testGetProductNotFound() {
+//        // Given
+//        int productId = 1;
+//        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+//        
+//        // When
+//        ProductDto result = productService.getProduct(productId);
+//        
+//        // Then
+//        assertNull(result);
+//    }
+//    
+//    // --- deleteProduct Tests ---
+//    @Test
+//    void testDeleteProductSuccess() {
+//        // Given
+//        int productId = 1;
+//        Product product = new Product();
+//        product.setPid(productId);
+//        
+//        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+//        
+//        // When
+//        String response = productService.deleteProduct(productId);
+//        
+//        // Then
+//        verify(productRepository).deleteById(productId);
+//        assertEquals("Product Record Deleted Successfully !!!", response);
+//    }
+//    
+//    @Test
+//    void testDeleteProductNotFound() {
+//        // Given
+//        int productId = 1;
+//        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+//        
+//        // When
+//        String response = productService.deleteProduct(productId);
+//        
+//        // Then
+//        assertEquals("Product Not found!!!", response);
+//    }
+//    
+//    // --- updateProduct Tests ---
+//    @Test
+//    void testUpdateProductSuccess() {
+//        // Given
+//        int productId = 1;
+//        // existing product
+//        Product existingProduct = new Product();
+//        existingProduct.setPid(productId);
+//        existingProduct.setProductName("Old Name");
+//        // (other fields could be set as needed)
+//        
+//        // new values to update; only changing name here
+//        ProductDto newValues = new ProductDto();
+//        newValues.setProductName("New Name");
+//        // assume other fields are null/0 so builder uses old values
+//        
+//        // The updated product built inside the service:
+//        Product updatedProduct = Product.builder()
+//                .pid(existingProduct.getPid())
+//                .productName("New Name")
+//                .productDesc(existingProduct.getProductDesc())
+//                .price(existingProduct.getPrice())
+//                .quantity(existingProduct.getQuantity())
+//                .category(existingProduct.getCategory())
+//                .inStock(existingProduct.isInStock())
+//                .color(existingProduct.getColor())
+//                .build();
+//        
+//        // Simulate repository saving updated product
+//        Product savedProduct = updatedProduct;
+//        ProductDto savedDto = new ProductDto();
+//        savedDto.setProductName("New Name");
+//        
+//        when(productRepository.findById(productId)).thenReturn(Optional.of(existingProduct));
+//        when(productRepository.saveAndFlush(any(Product.class))).thenReturn(savedProduct);
+//        when(modelMapper.map(savedProduct, ProductDto.class)).thenReturn(savedDto);
+//        
+//        // When
+//        Object response = productService.updateProduct(productId, newValues);
+//        
+//        // Then
+//        assertTrue(response instanceof ProductDto);
+//        ProductDto responseDto = (ProductDto) response;
+//        assertEquals("New Name", responseDto.getProductName());
+//    }
+//    
+//    @Test
+//    void testUpdateProductNotFound() {
+//        // Given
+//        int productId = 1;
+//        ProductDto newValues = new ProductDto();
+//        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+//        
+//        // When
+//        Object response = productService.updateProduct(productId, newValues);
+//        
+//        // Then
+//        assertTrue(response instanceof String);
+//        assertEquals("User not found!!!", response);
+//    }
+//    
+//    // --- decreaseQuantityForProductBy Tests ---
+//    @Test
+//    void testDecreaseQuantityForProductSuccess() {
+//        // Given
+//        int productId = 1;
+//        int decreaseQty = 2;
+//        Product product = new Product();
+//        product.setPid(productId);
+//        product.setQuantity(10);
+//        
+//        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+//        when(productRepository.saveAndFlush(product)).thenReturn(product);
+//        
+//        // When
+//        boolean result = productService.decreaseQuantityForProductBy(productId, decreaseQty);
+//        
+//        // Then
+//        assertTrue(result);
+//        assertEquals(8, product.getQuantity());
+//    }
+//    
+//    @Test
+//    void testDecreaseQuantityForProductNotFound() {
+//        // Given
+//        int productId = 1;
+//        int decreaseQty = 2;
+//        when(productRepository.findById(productId)).thenReturn(Optional.empty());
+//        
+//        // When
+//        boolean result = productService.decreaseQuantityForProductBy(productId, decreaseQty);
+//        
+//        // Then
+//        assertFalse(result);
+//    }
+}

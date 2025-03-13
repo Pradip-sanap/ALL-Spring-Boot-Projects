@@ -1,0 +1,42 @@
+package com.order.product.apiservice;
+
+import java.io.IOException;
+
+import org.springframework.stereotype.Service;
+
+import com.order.entity.Product;
+
+import retrofit2.Call;
+import retrofit2.Response;
+
+@Service
+public class ProductService {
+
+	private ProductApiService productService = RetrofitServiceGenerator.createService(ProductApiService.class);
+
+	public Product getProductById(int id) {
+		Product result = new Product();
+		try {
+			Call<Product> product = productService.getProductById(id);
+			Response<Product> response = product.execute();
+			result = response.body();
+			return result;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public boolean updateQuantityOfProductAfterBuying(int productid, int quantity) {
+		try {
+			Call<Boolean> isQuantityUpdated = productService.updateQuantityOfProduct(productid, quantity);
+			Response<Boolean> response = isQuantityUpdated.execute();
+			boolean result = response.body();
+			return result;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return false;
+	}
+
+}
