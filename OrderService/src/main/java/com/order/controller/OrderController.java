@@ -22,11 +22,9 @@ public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
-	
-	//place order
+	 
 	@PostMapping()
-	public ResponseEntity<Object> placedOrder(@RequestBody OrderDto orderDto){
-		System.out.println("Inside order controller ---->"+ orderDto);
+	public ResponseEntity<Object> placedOrder(@RequestBody OrderDto orderDto){ 
 		return new ResponseEntity<>(orderService.placedOrder(orderDto), HttpStatus.CREATED);
 		
 	}

@@ -54,7 +54,7 @@ public class ProductController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getProduct(@PathVariable("id") int id){ 
 		// Log trace and span ID
-        log.info("TraceId: {}, SpanId: {}", tracer.currentSpan().context().traceId(), tracer.currentSpan().context().spanId());
+        log.debug("TraceId: {}, SpanId: {}", tracer.currentSpan().context().traceId(), tracer.currentSpan().context().spanId());
 
 		try {
 			return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);

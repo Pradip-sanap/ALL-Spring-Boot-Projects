@@ -4,21 +4,31 @@ package com.product.service;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.stereotype.Service;
 
 import com.product.dto.ProductDto;
 import com.product.entity.Product;
 import com.product.repository.ProductRepository;
+
+import lombok.extern.slf4j.Slf4j;
  
 @Service
+@Slf4j
 public class ProductServiceImpl implements ProductService{
+	
+	private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 	
 	@Autowired
 	private ProductRepository productRepository;
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+    private brave.Tracer tracer;
 
 	@Override
 	public ProductDto addProduct(ProductDto userDto) {
@@ -36,6 +46,9 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Object getProduct(int id) {
+		logger.info("Product Service - TraceId: {}, SpanId: {}", 
+                tracer.currentSpan().context().traceId(), 
+                tracer.currentSpan().context().spanId());
 		try {
 			Optional<Product> existingProduct =  productRepository.findById(id); 
 			if(existingProduct.isPresent()) { 
