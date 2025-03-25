@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@Autowired
-    private brave.Tracer tracer;
+//	@Autowired
+//    private brave.Tracer tracer;
 
 	@Override
 	public ProductDto addProduct(ProductDto userDto) {
@@ -46,9 +46,9 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Object getProduct(int id) {
-		logger.info("Product Service - TraceId: {}, SpanId: {}", 
-                tracer.currentSpan().context().traceId(), 
-                tracer.currentSpan().context().spanId());
+//		logger.info("Product Service - TraceId: {}, SpanId: {}", 
+//                tracer.currentSpan().context().traceId(), 
+//                tracer.currentSpan().context().spanId());
 		try {
 			Optional<Product> existingProduct =  productRepository.findById(id); 
 			if(existingProduct.isPresent()) { 

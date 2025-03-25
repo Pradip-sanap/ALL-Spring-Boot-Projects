@@ -30,8 +30,8 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
-	@Autowired
-	private brave.Tracer tracer;
+//	@Autowired
+//	private brave.Tracer tracer;
 	
 	//add
 	@PostMapping("")
@@ -54,7 +54,7 @@ public class ProductController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getProduct(@PathVariable("id") int id){ 
 		// Log trace and span ID
-        log.debug("TraceId: {}, SpanId: {}", tracer.currentSpan().context().traceId(), tracer.currentSpan().context().spanId());
+//        log.debug("TraceId: {}, SpanId: {}", tracer.currentSpan().context().traceId(), tracer.currentSpan().context().spanId());
 
 		try {
 			return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);

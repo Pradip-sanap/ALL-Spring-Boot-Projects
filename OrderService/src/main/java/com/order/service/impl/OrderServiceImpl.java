@@ -12,10 +12,11 @@ import com.order.dto.OrderDto;
 import com.order.entity.Order;
 import com.order.entity.Product; 
 import com.order.repository.OrderRepository;
+import com.order.service.ApiInterface;
 import com.order.service.OrderService;
-import com.order.service.RetrofitInstance;
+//import com.order.service.RetrofitInstance;
 
-import brave.Tracer;
+//import brave.Tracer;
 import lombok.extern.slf4j.Slf4j;
   
 
@@ -25,28 +26,30 @@ public class OrderServiceImpl implements OrderService {
 	
 	private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
-    private final RetrofitInstance retrofitInstance;
-    private final Tracer tracer;
+//    private final RetrofitInstance retrofitInstance;
+    private final ApiInterface apiInterface;
+//    private final Tracer tracer;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, 
                             ModelMapper modelMapper, 
-                            RetrofitInstance retrofitInstance, 
-                            Tracer tracer) {
+                            ApiInterface apiInterface
+//                            Tracer tracer
+                            ) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
-        this.retrofitInstance = retrofitInstance;
-        this.tracer = tracer;
+        this.apiInterface = apiInterface;
+//        this.tracer = tracer;
     }
 	 
 	
 	@Override
 	public Object placedOrder(OrderDto orderDto) {  
 		// Log Trace ID and Span ID
-        log.info("Trace ID: {}, Span ID: {}", 
-                 tracer.currentSpan().context().traceIdString(), 
-                 tracer.currentSpan().context().spanIdString());
-		Product productObj = retrofitInstance.getProductById(orderDto.getProductId());  
+//        log.info("Trace ID: {}, Span ID: {}", 
+//                 tracer.currentSpan().context().traceIdString(), 
+//                 tracer.currentSpan().context().spanIdString());
+		Product productObj = apiInterface.getProductById(orderDto.getProductId());  
  
 		if(!productObj.isInStock()) {
 			return "Product Out of stock. Apologies !!!";
@@ -62,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
 		Order savedOrder =  orderRepository.save(newOrder);
 		
 		//update the quantity
-		boolean isQuantityUpdated = retrofitInstance.updateQuantityOfProductAfterBuying(
+		boolean isQuantityUpdated = apiInterface.updateQuantityOfProductAfterBuying(
 													orderDto.getProductId(), 
 													orderDto.getQuantity()
 												);

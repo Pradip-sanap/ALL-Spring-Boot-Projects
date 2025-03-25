@@ -1,8 +1,9 @@
-package com.product.repository;
+package com.order.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.order.entity.User;
  
-import com.product.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	

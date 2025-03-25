@@ -11,5 +11,4 @@ public interface OrderService {
 	public OrderDto getOrderById(int orderId);
 	
 	public List<OrderDto> getOrdersOfCustomer(String customerId);
-
 }

@@ -1,24 +1,28 @@
-package com.product.cotnroller;
-
-import java.util.Optional;
+package com.order.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
- 
-import com.product.entity.User;
-import com.product.repository.UserRepository;
-import com.product.utility.JwtUtility;
+
+import com.order.entity.User;
+import com.order.repository.UserRepository;
+import com.order.utility.JwtUtility;
 
 @RestController
-@RequestMapping("/product/auth")
+@RequestMapping("/orders/auth") 
 public class AuthController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+//	@Autowired
+//    private AuthenticationManager authenticationManager;
 	
 	@Autowired
 	private JwtUtility jwtUtility;
@@ -26,7 +30,8 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody User authRequest) {
 		try {
-			User existingUser = userRepository.findByUserName(authRequest.getUserName());
+			 User existingUser = userRepository.findByUserName(authRequest.getUserName());
+			System.out.println(existingUser);
 			if(existingUser == null) {
 				throw new Exception("Invalid user");
 			}
