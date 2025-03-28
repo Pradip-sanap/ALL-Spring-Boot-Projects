@@ -1,5 +1,7 @@
 package com.product.cotnroller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +30,7 @@ public class ProductController {
 	}
 
 	@Autowired
-	private ProductService productService;
-	
-//	@Autowired
-//	private brave.Tracer tracer;
+	private ProductService productService; 
 	
 	//add
 	@PostMapping("")
@@ -52,13 +51,21 @@ public class ProductController {
 	
 	//fetch 
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> getProduct(@PathVariable("id") int id){ 
-		// Log trace and span ID
-//        log.debug("TraceId: {}, SpanId: {}", tracer.currentSpan().context().traceId(), tracer.currentSpan().context().spanId());
+	public ResponseEntity<Object> getProduct(@PathVariable("id") int id){  
 
 		try {
 			return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
 			
+		} catch (Exception e) {
+			e.getMessage();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	
+	@GetMapping("/all")
+	public ResponseEntity<List<ProductDto>> getAllProducts(){
+		try {
+			return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
 		} catch (Exception e) {
 			e.getMessage();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

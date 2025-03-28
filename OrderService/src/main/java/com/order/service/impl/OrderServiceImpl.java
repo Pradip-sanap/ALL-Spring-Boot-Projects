@@ -7,7 +7,10 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.stereotype.Service;  
+import org.springframework.stereotype.Service;
+
+import com.order.dto.JwtRequest;
+import com.order.dto.JwtResponse;
 import com.order.dto.OrderDto;
 import com.order.entity.Order;
 import com.order.entity.Product; 
@@ -49,7 +52,15 @@ public class OrderServiceImpl implements OrderService {
 //        log.info("Trace ID: {}, Span ID: {}", 
 //                 tracer.currentSpan().context().traceIdString(), 
 //                 tracer.currentSpan().context().spanIdString());
-		Product productObj = apiInterface.getProductById(orderDto.getProductId());  
+		
+		JwtResponse token = apiInterface.getToken(new JwtRequest("admin", "admin"));
+		log.info("Token is ::"+token.getJwtToken());
+		
+		String jwttoken = "Bearer_"+token.getJwtToken();
+		log.info("Bearer Token ::"+jwttoken);
+		
+		Product productObj = apiInterface.getProductById(orderDto.getProductId(),jwttoken);  
+		log.info("Product details successfully fetch frpm Product service");
  
 		if(!productObj.isInStock()) {
 			return "Product Out of stock. Apologies !!!";
@@ -63,16 +74,18 @@ public class OrderServiceImpl implements OrderService {
 		newOrder.setColor(productObj.getColor()); 
 		
 		Order savedOrder =  orderRepository.save(newOrder);
+		log.info("Order saved successfully.");
 		
 		//update the quantity
 		boolean isQuantityUpdated = apiInterface.updateQuantityOfProductAfterBuying(
 													orderDto.getProductId(), 
-													orderDto.getQuantity()
+													orderDto.getQuantity(),
+													jwttoken
 												);
 		if(isQuantityUpdated) {
-			System.out.println("Quantity also updated ----->");
+			log.info("After purchase, Quantity Of product updated successfully.");
 		}else {
-			System.out.println("Not update quantity *****");
+			log.error("Error while updating product quantity.");
 		}
 		
 		

@@ -1,5 +1,7 @@
 package com.product.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.product.dto.ProductDto;
@@ -44,6 +46,9 @@ public interface ProductService {
 	 * @return {@literal User Object} if an entity with the given id exists, {@literal String} otherwise.
 	 */
 	public boolean decreaseQuantityForProductBy(int id, int quantity);
+	
+	
+	public List<ProductDto> getAllProducts();
 
 
 }

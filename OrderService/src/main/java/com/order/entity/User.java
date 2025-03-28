@@ -1,6 +1,7 @@
 package com.order.entity;
  
 
+import brave.internal.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Nullable
 	private int userID;
 	private String userName;
 	private String password;

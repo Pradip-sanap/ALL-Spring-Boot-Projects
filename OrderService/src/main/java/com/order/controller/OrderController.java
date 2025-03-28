@@ -23,7 +23,7 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	 
-	@PostMapping()
+	@PostMapping("")
 	public ResponseEntity<Object> placedOrder(@RequestBody OrderDto orderDto){ 
 		return new ResponseEntity<>(orderService.placedOrder(orderDto), HttpStatus.CREATED);
 		

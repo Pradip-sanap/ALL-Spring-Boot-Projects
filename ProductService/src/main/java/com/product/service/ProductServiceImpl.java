@@ -1,7 +1,9 @@
 package com.product.service;
  
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -26,10 +28,7 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private ModelMapper modelMapper;
-	
-//	@Autowired
-//    private brave.Tracer tracer;
-
+	 
 	@Override
 	public ProductDto addProduct(ProductDto userDto) {
 		Product newProduct = modelMapper.map(userDto, Product.class);
@@ -46,9 +45,6 @@ public class ProductServiceImpl implements ProductService{
 
 	@Override
 	public Object getProduct(int id) {
-//		logger.info("Product Service - TraceId: {}, SpanId: {}", 
-//                tracer.currentSpan().context().traceId(), 
-//                tracer.currentSpan().context().spanId());
 		try {
 			Optional<Product> existingProduct =  productRepository.findById(id); 
 			if(existingProduct.isPresent()) { 
@@ -130,6 +126,20 @@ public class ProductServiceImpl implements ProductService{
 			// TODO: handle exception
 		}
 		return false;
+	}
+
+	@Override
+	public List<ProductDto> getAllProducts() {
+		try {
+			List<Product> allProducts = productRepository.findAll();
+			
+			return allProducts.stream()
+	                .map(product -> modelMapper.map(product, ProductDto.class))
+	                .collect(Collectors.toList());
+		} catch (Exception e) {
+			log.error("Error while fetching all products: {}", e.getMessage());
+		}
+		return null;
 	}
 
 }
