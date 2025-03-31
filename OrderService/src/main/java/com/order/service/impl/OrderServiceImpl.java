@@ -19,49 +19,46 @@ import com.order.service.ApiInterface;
 import com.order.service.OrderService;
 //import com.order.service.RetrofitInstance;
 
+import lombok.AllArgsConstructor;
 //import brave.Tracer;
 import lombok.extern.slf4j.Slf4j;
   
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
-	
-	private final OrderRepository orderRepository;
-    private final ModelMapper modelMapper;
-//    private final RetrofitInstance retrofitInstance;
-    private final ApiInterface apiInterface;
-//    private final Tracer tracer;
 
-    @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, 
-                            ModelMapper modelMapper, 
-                            ApiInterface apiInterface
-//                            Tracer tracer
-                            ) {
-        this.orderRepository = orderRepository;
-        this.modelMapper = modelMapper;
-        this.apiInterface = apiInterface;
-//        this.tracer = tracer;
-    }
+	private final OrderRepository orderRepository;
+    private final ModelMapper modelMapper; 
+    private final ApiInterface apiInterface;
+ 
+//    public OrderServiceImpl(
+//    		OrderRepository orderRepository, 
+//            ModelMapper modelMapper, 
+//            ApiInterface apiInterface
+//    ) {
+//        this.orderRepository = orderRepository;
+//        this.modelMapper = modelMapper;
+//        this.apiInterface = apiInterface;
+//    }
 	 
 	
 	@Override
-	public Object placedOrder(OrderDto orderDto) {  
-		// Log Trace ID and Span ID
-//        log.info("Trace ID: {}, Span ID: {}", 
-//                 tracer.currentSpan().context().traceIdString(), 
-//                 tracer.currentSpan().context().spanIdString());
+	public Object placedOrder(OrderDto orderDto) {
 		
 		JwtResponse token = apiInterface.getToken(new JwtRequest("admin", "admin"));
 		log.info("Token is ::"+token.getJwtToken());
 		
 		String jwttoken = "Bearer_"+token.getJwtToken();
 		log.info("Bearer Token ::"+jwttoken);
-		
-		Product productObj = apiInterface.getProductById(orderDto.getProductId(),jwttoken);  
+
+		Product productObj = apiInterface.getProductById(orderDto.getProductId(), jwttoken);
+
+		String hello = "hello world";
+
 		log.info("Product details successfully fetch frpm Product service");
- 
+
 		if(!productObj.isInStock()) {
 			return "Product Out of stock. Apologies !!!";
 		}
@@ -106,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
 				throw new Exception("Invalide Order id");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();  // Optionally log the error for debugging purposes
+			e.printStackTrace();
 	        return null;
 		} 
 		 
@@ -122,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
 			 if (orders.isEmpty()) {
 		            return null;  // Return null if no orders found
 		        } else {
-		            // Convert each Order to an OrderDto and return the list
+
 		            return orders.stream()
 		                         .map(order -> modelMapper.map(order, OrderDto.class))
 		                         .collect(Collectors.toList());
