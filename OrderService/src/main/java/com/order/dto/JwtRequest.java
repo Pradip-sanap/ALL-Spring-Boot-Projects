@@ -9,8 +9,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class JwtRequest {
-
+public class JwtRequest { 
     private String username;
     private String password;
+    
 }

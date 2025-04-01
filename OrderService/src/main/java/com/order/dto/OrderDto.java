@@ -34,7 +34,6 @@ public class OrderDto {
 	PaymentStatus paymentStatus;
 	
 	String paymentId;
-	
 
 	int quantity;
 }

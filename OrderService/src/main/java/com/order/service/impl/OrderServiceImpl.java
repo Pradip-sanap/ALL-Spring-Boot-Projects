@@ -25,39 +25,29 @@ import lombok.extern.slf4j.Slf4j;
   
 
 @Service
-@Slf4j
-@AllArgsConstructor
+@Slf4j 
 public class OrderServiceImpl implements OrderService {
 
-	private final OrderRepository orderRepository;
-    private final ModelMapper modelMapper; 
-    private final ApiInterface apiInterface;
- 
-//    public OrderServiceImpl(
-//    		OrderRepository orderRepository, 
-//            ModelMapper modelMapper, 
-//            ApiInterface apiInterface
-//    ) {
-//        this.orderRepository = orderRepository;
-//        this.modelMapper = modelMapper;
-//        this.apiInterface = apiInterface;
-//    }
-	 
+	@Autowired
+	private  OrderRepository orderRepository;
+	
+	@Autowired
+    private  ModelMapper modelMapper; 
+	
+	@Autowired
+    private  ApiInterface apiInterface; 
 	
 	@Override
 	public Object placedOrder(OrderDto orderDto) {
 		
 		JwtResponse token = apiInterface.getToken(new JwtRequest("admin", "admin"));
-		log.info("Token is ::"+token.getJwtToken());
+		log.debug("Token is ::"+token.getJwtToken());
 		
 		String jwttoken = "Bearer_"+token.getJwtToken();
-		log.info("Bearer Token ::"+jwttoken);
+		log.debug("Bearer Token ::"+jwttoken);
 
 		Product productObj = apiInterface.getProductById(orderDto.getProductId(), jwttoken);
-
-		String hello = "hello world";
-
-		log.info("Product details successfully fetch frpm Product service");
+		log.debug("Product details successfully fetch frpm Product service");
 
 		if(!productObj.isInStock()) {
 			return "Product Out of stock. Apologies !!!";
@@ -94,8 +84,9 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderDto getOrderById(int orderId) {
 
-		Optional<Order> orderDetails = orderRepository.findById(orderId);
 		try {
+			Optional<Order> orderDetails = orderRepository.findById(orderId);
+			
 			if(orderDetails.isPresent()) {
 				return modelMapper.map(orderDetails.get(), OrderDto.class);
 			}
@@ -110,16 +101,17 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 
-
-	@SuppressWarnings("unchecked")
+ 
 	@Override
 	public List<OrderDto> getOrdersOfCustomer(String customerId) {
+		
 		try {
+			
 			List<Order> orders =  orderRepository.findByCustomerId(customerId);
 			 if (orders.isEmpty()) {
-		            return null;  // Return null if no orders found
+		            return null;   
 		        } else {
-
+	
 		            return orders.stream()
 		                         .map(order -> modelMapper.map(order, OrderDto.class))
 		                         .collect(Collectors.toList());

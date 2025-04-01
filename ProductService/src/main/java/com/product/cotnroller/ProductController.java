@@ -32,7 +32,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService; 
 	
-	//add
+	 
 	@PostMapping("")
 	public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) { 
 		try {
@@ -49,7 +49,7 @@ public class ProductController {
 		
 	}
 	
-	//fetch 
+	 
 	@GetMapping("/{id}")
 	public ResponseEntity<Object> getProduct(@PathVariable("id") int id){  
 
@@ -72,19 +72,19 @@ public class ProductController {
 		}
 	}
 	
-	//update 
+ 
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateProduct(@PathVariable("id") int id, @RequestBody ProductDto newValues){
 		return new ResponseEntity<>(productService.updateProduct(id, newValues), HttpStatus.OK);
 	}
 	
-	//delete
+	 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deleteProduct(@PathVariable("id") int id) {
 		return new ResponseEntity<>(productService.deleteProduct(id), HttpStatus.OK);
 	}
 	
-	//product buy
+	 
 	@PutMapping("/{id}/{quantity}")
 	public ResponseEntity<Boolean> decreaseQuantityForProductBy(@PathVariable("id") int id, @PathVariable("quantity") int quantity) {
 		return new ResponseEntity<>(productService.decreaseQuantityForProductBy(id, quantity), HttpStatus.OK);
