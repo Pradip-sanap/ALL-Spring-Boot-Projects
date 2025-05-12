@@ -32,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
 	private  OrderRepository orderRepository;
 	
 	@Autowired
+	
     private  ModelMapper modelMapper; 
 	
 	@Autowired
@@ -47,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
 		log.debug("Bearer Token ::"+jwttoken);
 
 		Product productObj = apiInterface.getProductById(orderDto.getProductId(), jwttoken);
-		log.debug("Product details successfully fetch frpm Product service");
+		log.debug("Product details successfully fetch from Product service");
 
 		if(!productObj.isInStock()) {
 			return "Product Out of stock. Apologies !!!";
