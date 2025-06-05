@@ -45,6 +45,7 @@ public class DemoController {
 
     @Autowired
     private PrototypeBean prototypeBean2;
+    
     @GetMapping("/scope")
     public void testPrototype() {
         System.out.println("PrototypeBean1 ID: " + prototypeBean1.getId());
