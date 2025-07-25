@@ -2,8 +2,12 @@
 .metadata/
 
 **/bin/
-**/target/
+# **/target/
 
 **/.settings/
 **/.classpath
+**/.project
 **/.HELP.md 
+
+
+.vscode/
