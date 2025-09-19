@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import com.demo.doa.UserRepository;
 import com.demo.entities.User;
@@ -15,7 +16,7 @@ import com.demo.entities.User;
 public class FirstProjectApplication {
 
 	public static void main(String[] args) {
-		ApplicationContext context =  SpringApplication.run(FirstProjectApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication.run(FirstProjectApplication.class, args);
 	
 		UserRepository ur = context.getBean(UserRepository.class);
 		
