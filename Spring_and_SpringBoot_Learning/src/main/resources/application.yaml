@@ -1,0 +1,15 @@
+database:
+  url: jdbc:mysql://localhost:3306/orderdb
+  username: root
+  password: root
+  timeout: 6
+  pool:
+    max-size: 10
+    min-size: 5
+  servers:
+    - server1
+    - server2
+    - server3
+  roles:
+    admin: ADMIN
+    user: USER
