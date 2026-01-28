@@ -12,11 +12,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Person /*implements BeanPostProcessor*/
-            implements
+public class Person
+//            implements
 //        BeanNameAware,
-        ApplicationContextAware,
-        BeanPostProcessor
+//        ApplicationContextAware,
+//        BeanPostProcessor
 {
 
     private String name;
@@ -56,10 +56,10 @@ public class Person /*implements BeanPostProcessor*/
 //        return bean;  // Return the bean (or a proxy)
 //    }
 
-    @PostConstruct
-    public void initMethod() {
-        System.out.println("Inside init method");
-    }
+//    @PostConstruct
+//    public void initMethod() {
+//        System.out.println("Inside init method");
+//    }
 
 //    @Override
 //    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -67,15 +67,15 @@ public class Person /*implements BeanPostProcessor*/
 //        return bean;
 //    }
 
-    @PreDestroy
-    public void destroyMethod() {
-        System.out.println("Inside destroy method");
-    }
+//    @PreDestroy
+//    public void destroyMethod() {
+//        System.out.println("Inside destroy method");
+//    }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-
-    }
+//    @Override
+//    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+//
+//    }
 
 //    @Override
 //    public void setBeanName(String name) {

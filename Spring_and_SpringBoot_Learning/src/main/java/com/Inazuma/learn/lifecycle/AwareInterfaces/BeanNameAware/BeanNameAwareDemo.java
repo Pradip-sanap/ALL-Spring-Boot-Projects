@@ -10,7 +10,7 @@ public class BeanNameAwareDemo implements BeanNameAware {
 
     @Override
     public void setBeanName(String name) {
-        System.out.println(">>> BeanNameAware.setBeanName() called with: " + name);
+//        System.out.println(">>> BeanNameAware.setBeanName() called with: " + name);
         this.beanName = name;
     }
 

@@ -15,7 +15,7 @@ public class EnvironmentAwareDemo implements EnvironmentAware {
 
     @Override
     public void setEnvironment(Environment environment) {
-        System.out.println(">>> EnvironmentAware.setEnvironment() called");
+//        System.out.println(">>> EnvironmentAware.setEnvironment() called");
         this.environment = environment;
     }
 

@@ -7,10 +7,12 @@ import com.Inazuma.learn.JavaBaseConfiguration.MyConfig;
 import com.Inazuma.learn.model.Address;
 import com.Inazuma.learn.model.Database;
 import com.Inazuma.learn.model.Order;
+import com.Inazuma.learn.service.ReportService;
 import com.Inazuma.learn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +29,11 @@ public class UserController {
     private final Database database;
     private final Dog dog;
     private final Cat cat;
+    @Autowired
+    private ReportService reportService;
+    @Autowired
+    private Environment environment;
+
 
     @Autowired
     private List<Address> allAddress;
@@ -47,6 +54,7 @@ public class UserController {
         this.database = database;
         this.dog = dog;
         this.cat = cat;
+//        this.reportService = reportService;
     }
 
     @GetMapping("/hello")
@@ -86,5 +94,12 @@ public class UserController {
     public void getConfig(){
         cat.print();
         dog.print();
+    }
+
+    @GetMapping("/test")
+    public String test() {
+//        environment.getActiveProfiles();
+
+        return "OK";
     }
 }

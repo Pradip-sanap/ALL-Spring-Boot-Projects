@@ -1,11 +1,10 @@
 package com.Inazuma.learn.controller;
 
 import com.Inazuma.learn.model.Product;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,8 +25,7 @@ public class ProductController {
 //            @RequestHeader("X-API-v2") int apiv2
 //            @RequestParam List<String> role
             @RequestParam Map<String, String> queryParams,
-            @RequestHeader Map<String, String> allheaders,
-            @RequestAttribute int quantity
+            @RequestHeader Map<String, String> allheaders
     ){
 //        System.out.println(version);
 //        System.out.println(apiv1);
@@ -35,11 +33,9 @@ public class ProductController {
 //        System.out.println(role);
         System.out.println(queryParams);
         System.out.println(allheaders);
-        System.out.println(quantity);
 //        System.out.println("Hello world");
     }
 
-    @Request
 
 
     @GetMapping(value = "/{productID}/reviews/{reviewID}")
@@ -65,6 +61,33 @@ public class ProductController {
 //        });
 
     }
+
+
+    @GetMapping("/get")
+    public void get(){
+        System.out.println("Get method");
+    }
+    @PostMapping("/post")
+    public void post(){
+        System.out.println("Post method");
+    }
+    @PutMapping("/put")
+    public void put(){
+        System.out.println("put method");
+    }
+
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping("/delete")
+    public ResponseEntity<Object> delete(){
+        System.out.println("delete method");
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PatchMapping("/patch")
+    public void patch(){
+        System.out.println("Patch method");
+    }
+
 
 
 }

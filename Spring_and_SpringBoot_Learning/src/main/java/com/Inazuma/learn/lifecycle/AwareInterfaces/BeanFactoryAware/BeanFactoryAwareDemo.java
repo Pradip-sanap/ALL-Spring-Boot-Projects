@@ -13,7 +13,7 @@ public class BeanFactoryAwareDemo implements BeanFactoryAware {
 
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        System.out.println(">>> BeanFactoryAware.setBeanFactory() called");
+//        System.out.println(">>> BeanFactoryAware.setBeanFactory() called");
         this.beanFactory = beanFactory;
     }
 
