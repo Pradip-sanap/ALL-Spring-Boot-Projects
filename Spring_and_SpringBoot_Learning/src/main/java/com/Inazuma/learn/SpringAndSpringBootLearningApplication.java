@@ -23,6 +23,7 @@ public class SpringAndSpringBootLearningApplication {
 //		bean1.setAge(24);
 
 
+
 	}
 
 }

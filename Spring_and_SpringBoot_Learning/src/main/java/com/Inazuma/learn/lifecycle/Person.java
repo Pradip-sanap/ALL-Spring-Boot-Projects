@@ -13,73 +13,82 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Person
-//            implements
-//        BeanNameAware,
-//        ApplicationContextAware,
+            implements
+        BeanNameAware,
+        ApplicationContextAware
 //        BeanPostProcessor
 {
 
     private String name;
     private Integer age;
 
+    //constructor
     public Person() {
         super();
         System.out.println("Contructor of Person called!!!");
     }
 
+    //getter setter
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public Integer getAge() {
         return age;
     }
-
     public void setAge(Integer age) {
         System.out.println("Setting Person's Age");
         this.age = age;
     }
 
+
+
+    // aware interfaces methods
     @Override
-    public String toString() {
-        return "Person [name=" + name + ", age=" + age + "]";
+    public void setBeanName(String name) {
+        name = "PradipsBean";
+        System.out.println("BeanNameAware interface method called ->"+name);
     }
 
-    //------------------------------------------------------
+    @Override
+    public void setApplicationContext(ApplicationContext context) throws BeansException {
+        System.out.println("ApplicationContextAware interface method called");
+    }
+
+    //BeanPostProcessor -> before init
 //    @Override
 //    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 //        System.out.println(">>> BEFORE Init: " + beanName + " [" + bean.getClass().getSimpleName() + "]");
 //        return bean;  // Return the bean (or a proxy)
 //    }
 
-//    @PostConstruct
-//    public void initMethod() {
-//        System.out.println("Inside init method");
-//    }
+    //init method -> @PostConstruct
+    @PostConstruct
+    public void initMethod() {
+        System.out.println("Inside init method");
+    }
 
+    //BeanPostProcessor -> after init
 //    @Override
 //    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 //        System.out.println(">>> AFTER Init: " + beanName + " [" + bean.getClass().getSimpleName() + "]");
 //        return bean;
 //    }
 
-//    @PreDestroy
-//    public void destroyMethod() {
-//        System.out.println("Inside destroy method");
-//    }
+    @PreDestroy
+    public void destroyMethod() {
+        System.out.println("Inside destroy method");
+    }
 
-//    @Override
-//    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-//
-//    }
 
-//    @Override
-//    public void setBeanName(String name) {
-//        name = "PradipsBean";
-//        System.out.println(name);
-//    }
+
+    //toString
+    @Override
+    public String toString() {
+        return "Person [name=" + name + ", age=" + age + "]";
+    }
+
+
 }

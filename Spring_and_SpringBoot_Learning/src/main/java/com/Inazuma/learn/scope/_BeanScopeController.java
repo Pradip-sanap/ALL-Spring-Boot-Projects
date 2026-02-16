@@ -38,7 +38,6 @@ public class _BeanScopeController {
         return "Bean1 counter: " + bean1.getCounter() +
                 ", Bean2 counter: " + bean2.getCounter() +
                 ", Same instance: " + (bean1 == bean2);
-        // Output: Bean1 counter: 1, Bean2 counter: 1, Same instance: true
     }
 
     @GetMapping("/prototype")
@@ -55,7 +54,6 @@ public class _BeanScopeController {
         return "Bean1 counter: " + bean1.getCounter() +
                 ", Bean2 counter: " + bean2.getCounter() +
                 ", Same instance: " + (bean1 == bean2);
-        // Output: Bean1 counter: 2, Bean2 counter: 1, Same instance: false
     }
 
     @GetMapping("/request")

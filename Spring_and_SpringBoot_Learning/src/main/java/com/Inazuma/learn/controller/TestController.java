@@ -16,6 +16,7 @@ public class TestController {
     @GetMapping()
     public String testingCode(){
         orderService.placeOrder();
+        orderService.check();
         return "Success";
     }
 

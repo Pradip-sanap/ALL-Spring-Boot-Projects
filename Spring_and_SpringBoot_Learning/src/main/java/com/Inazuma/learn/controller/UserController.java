@@ -4,6 +4,7 @@ package com.Inazuma.learn.controller;
 import com.Inazuma.learn.JavaBaseConfiguration.Cat;
 import com.Inazuma.learn.JavaBaseConfiguration.Dog;
 import com.Inazuma.learn.JavaBaseConfiguration.MyConfig;
+import com.Inazuma.learn.baens.LazyBean;
 import com.Inazuma.learn.model.Address;
 import com.Inazuma.learn.model.Database;
 import com.Inazuma.learn.model.Order;
@@ -54,7 +55,6 @@ public class UserController {
         this.database = database;
         this.dog = dog;
         this.cat = cat;
-//        this.reportService = reportService;
     }
 
     @GetMapping("/hello")
