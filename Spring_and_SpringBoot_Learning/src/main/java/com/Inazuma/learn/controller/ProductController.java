@@ -39,7 +39,7 @@ public class ProductController {
 //        System.out.println("Hello world");
     }
 
-    @Request
+//    @Request
 
 
     @GetMapping(value = "/{productID}/reviews/{reviewID}")
