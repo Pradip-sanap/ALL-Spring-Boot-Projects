@@ -27,17 +27,19 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "stock_keeping_unit", length = 800, unique = true)
+
+	@Column(name = "stock_Units", length = 50, unique = true)
 	private String sku;
-	
 	
 	private String name;
 	private String description;
 	private BigDecimal price;
 	private boolean active;
 	private String imageUrl;
+
 	@CreationTimestamp 
 	private LocalDateTime dataCreated;
+
 	@UpdateTimestamp
 	private LocalDateTime lastUPdated;
 

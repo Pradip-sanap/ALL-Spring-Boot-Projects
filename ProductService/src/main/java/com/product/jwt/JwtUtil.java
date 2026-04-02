@@ -32,11 +32,11 @@
 //	}
 //	public boolean validateToken(String token) {
 //		// TODO Auto-generated method stub
-//		String[] parts = token.split("\\.");
-//		if(parts.length != 3) {
-//			log.error("Unexpected Token length");
-//			return false;
-//		}
+		// String[] parts = token.split("\\.");
+		// if(parts.length != 3) {
+		// 	log.error("Unexpected Token length");
+		// 	return false;
+		// }
 //		
 //		try {
 //			Claims claims = Jwts.parser()

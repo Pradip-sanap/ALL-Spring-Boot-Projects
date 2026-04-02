@@ -14,10 +14,16 @@ public class MobileController {
 	@Autowired
 	MobileServiceImpl service;
 	
+//	@GetMapping
+//	public boolean operation() {
+////		service.saveMobile();
+////		service.saveAll();
+//		return true;
+//	}
+
 	@GetMapping
-	public boolean operation() {
-//		service.saveMobile();
-		service.saveAll();
-		return true;
+	public String success(){
+		service.jpa_Default_Methods();
+		return "Sucess";
 	}
 }

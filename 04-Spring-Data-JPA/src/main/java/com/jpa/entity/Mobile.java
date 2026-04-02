@@ -3,6 +3,7 @@ package com.jpa.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.Builder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,12 +23,14 @@ import lombok.NoArgsConstructor;
 		name = "mobiles",
 		schema = "testdb",
 		uniqueConstraints = {
-				@UniqueConstraint(columnNames = "sku"),
+				@UniqueConstraint(columnNames = "stock_keeping_unit"),
 				@UniqueConstraint(columnNames = "model")
 		}
 )
 @Data 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Mobile {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,20 +38,20 @@ public class Mobile {
 
 	@Column(name = "stock_keeping_unit", nullable = false)
 	private String sku;
-	
+
     private String brand;
-    
+
     @Column(nullable = false)
     private String model;
-    
+
     private double price;
-    
+
     @Column()
     private int stock;
-    
+
     @CreationTimestamp
     private LocalDateTime dateCreated;
-    
+
     @UpdateTimestamp
     private LocalDateTime lastUpdated;
 

@@ -5,6 +5,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import com.jpa.MappingLearning.OneToMany.Customer;
+import com.jpa.repository.CustomerRepo;
+import com.jpa.repository.OrderRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -21,7 +24,12 @@ public class JPAApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(JPAApplication.class, args);
 
-		MobileRepository repo = context.getBean(MobileRepository.class);
+//		CustomerRepo customerRepo = context.getBean(CustomerRepo.class);
+//		OrderRepository orderRepo = context.getBean(OrderRepository.class);
+
+//		List<Customer> all = customerRepo.findAll();
+//		System.out.println(all.toString());
+
 
 //		 Mobile m1 = new Mobile("SKU12345", "Samsung", "Galaxy S21", 799.99, 50);
 //		 Mobile saveobj = repo.save(m1);
