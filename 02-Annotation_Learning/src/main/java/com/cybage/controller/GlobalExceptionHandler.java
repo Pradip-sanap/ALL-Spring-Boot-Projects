@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
         headers.add("X-Custom-Header", "CustomHeaderValue");
         
         return new ResponseEntity(errorResponse,headers,  HttpStatus.BAD_REQUEST);
-//        return "Global Error: " + ex.getMessage();
     }
 
     @ExceptionHandler(Exception.class)  // Catch-all for other exceptions

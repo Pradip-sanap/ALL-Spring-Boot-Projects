@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: Sample_Springboot
+
+
+  security:
+    oauth2.client:
+      registration:
+        google:
+          client-id: ${GOOGLE_CLIENT_ID}
+          client-secret: ${GOOGLE_CLIENT_SECRET}
+          scope:
+            - openid
+            - profile
+            - email
+          redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+          client-name: Google
+
+      provider:
+        google:
+          authorization-uri: https://accounts.google.com/o/oauth2/v2/auth?prompt=consent
+
+
+jwt:
+  secret: 63f4945d921d599f27ae4fdf5bada3f1        # 32 char length
+  access:
+    expiration: 3600000                             # milliseconds    - 60 minutes

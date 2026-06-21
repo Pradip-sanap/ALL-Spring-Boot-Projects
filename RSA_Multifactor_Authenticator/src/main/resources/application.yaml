@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: RSA_Multifactor_Authenticator
+server:
+  port: 8081

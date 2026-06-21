@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OAuth2 Test</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Spring Boot OAuth2 + JWT Test</h2>
+
+<button onclick="login()">Login with Google</button> 
+<button onclick="logout()">Logout</button>
+
+<div id="result"></div>
+
+<script>
+    const BASE_URL = "http://localhost:8080";
+
+    function login() {
+        window.location.href = BASE_URL + "/oauth2/authorization/google";
+    }
+
+    function callApi() {
+        const token = localStorage.getItem("token");
+
+        fetch(BASE_URL + "/api/v1/hello", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("result").innerText = data;
+        })
+        .catch(err => console.error(err));
+    }
+
+    function logout() {
+        localStorage.removeItem("token");
+        window.location.href = BASE_URL + "/logout";
+    }
+
+    // extract token from URL after login redirect
+    window.onload = () => {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+
+        if (token) {
+            localStorage.setItem("token", token);
+            document.getElementById("result").innerText = "Logged in successfully!";
+        }
+    }
+</script>
+
+</body>
+</html>

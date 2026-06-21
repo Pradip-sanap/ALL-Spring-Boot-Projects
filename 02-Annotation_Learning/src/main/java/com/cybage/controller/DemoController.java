@@ -28,14 +28,13 @@ public class DemoController {
     public DemoController(SampleService appConfig) {
         this.appConfig = appConfig;
     }
+
     @GetMapping
     public void printConfig() {
         System.out.println("App Name: " + appConfig.getName());
         System.out.println("Version: " + appConfig.getVersion());
         System.out.println("Logging Enabled: " + appConfig.getFeatures().isEnableLogging());
         System.out.println("Max Users: " + appConfig.getFeatures().getMaxUsers());
-        
-        //------------------
         lazyBean.showMe();
        
     }

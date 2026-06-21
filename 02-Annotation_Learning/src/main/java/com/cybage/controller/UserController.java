@@ -17,9 +17,9 @@ public class UserController {
 		return "User " + id;
 	}
 
-//	@ExceptionHandler(IllegalArgumentException.class)
-//	public String handleIllegalArgument(IllegalArgumentException ex) {
-//		System.out.println("Exception -->"+ ex.getLocalizedMessage());
-//		return "Error: " + ex.getMessage();
-//	}
+	@ExceptionHandler(IllegalArgumentException.class)
+	public String handleIllegalArgument(IllegalArgumentException ex) {
+		System.out.println("Exception -->"+ ex.getLocalizedMessage());
+		return "Error: " + ex.getMessage();
+	}
 }
